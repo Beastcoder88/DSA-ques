@@ -1,59 +1,39 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-//brute
-void moveZerosToEnd(int arr[],int n){
-    int temp[n];
-    int j = 0;
-    for (int i = 0; i < n; i++)
+bool isFreqSame(int freq1[],int freq2[]){
+    for (int i = 0; i < 26; i++)
     {
-        if(arr[i]!=0){
-            temp[j++] = arr[i];
-        }
+        if(freq1[i]!=freq2[i]) return false;
     }
-    while(j<n){
-        temp[j++] = 0;
-    }
-    for (int i = 0; i < n; i++)
-    {
-        arr[i] = temp[i];
-    }
-    
-    
+    return true;
 }
 
-//optimal
-void moveZeros(int arr[],int n){
-    int j = -1;
-    for (int i = 0; i < n; i++)
+bool checkInclusion(string s1, string s2){
+    int freq[26] = {0};
+    for (int i = 0; i < s1.length(); i++)
     {
-        if(arr[i] == 0){
-            j = i;
-            break;
-        }
+        freq[s1[i]-'a']++;
     }
-    for (int i = j+1; i < n; i++)
+
+    int windsize = s1.length();
+
+    for (int i = 0; i < s2.length(); i++)
     {
-        if(arr[i]!=0){
-            swap(arr[i],arr[j]);
-            j++;
+        int windidx = 0 , idx = i;
+        int windfreq[26] = {0};
+        while(windidx<windsize && idx < s2.length()){
+            windfreq[s2[idx]-'a']++;
+            windidx++; idx++;
         }
-    }   
+        
+        if(isFreqSame(freq,windfreq)) return true;
+    }
+    return false;
 }
 
-int main(){
-    int n;
-    cin>>n;
-    int arr[n];
-    for (int i = 0; i < n; i++)
-    {
-        cin>>arr[i];
-    }
-    moveZerosToEnd(arr,n);
-    // moveZeros(arr,n);
-    for (int i = 0; i < n; i++)
-    {
-        cout<<arr[i]<<" ";
-    }
+int main() {
+    string s1 = "ab", s2 = "eidboaoo";
+    cout<<checkInclusion(s1,s2);
     return 0;
 }
